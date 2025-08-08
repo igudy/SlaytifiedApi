@@ -1,0 +1,43 @@
+1. SlaytifiedApi.Api:
+
+AuthController and ProductController
+
+Program.cs and appsettings.json
+
+2. SlaytifiedApi.Application:
+
+Interfaces and DTOs for Auth and Product
+
+AuthService and ProductService logic
+
+3. SlaytifiedApi.Domain:
+
+User and Product entities
+
+example
+
+public class User
+{
+    public Guid Id { get; set; }
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public string PasswordHash { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+4. SlaytifiedApi.Infrastructure:
+
+EF Core AppDbContext
+
+Auth and Product repositories
+
+JwtSettings config
+
+
+SlaytifiedApi.Domain → Holds the entities (User, Product) and core rules about them.
+
+SlaytifiedApi.Application → Uses DTOs and services to handle business logic (AuthService, ProductService) based on those entities.
+
+SlaytifiedApi.Infrastructure → Handles persistence (EF Core AppDbContext, repositories) to save and load these entities from the database.
+
+SlaytifiedApi.Api → Exposes controllers to handle HTTP requests, which call the application services.
