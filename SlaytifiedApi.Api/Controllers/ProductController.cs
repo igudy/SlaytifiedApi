@@ -40,6 +40,21 @@ public class ProductController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
+    // Update an existing product
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] ProductController product)
+    {
+        var updated = await _productService.UpdateAsync(id, product);
+        if (updated == null) return NotFound();
+        return Ok(updated);
+    }
 
-
+    // Delete a product
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var success = await _productService.DeleteAsync(id);
+        if (!success) return NotFound();
+        return NoContent();
+    }
 }
