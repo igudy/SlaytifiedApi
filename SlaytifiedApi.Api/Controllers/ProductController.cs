@@ -34,7 +34,7 @@ public class ProductController : ControllerBase
 
     // Create a new product
     [HttpPost]
-    public async Task<IActionResult> Crate([FromBody] Product product)
+    public async Task<IActionResult> Create([FromBody] Product product)
     {
         var created = await _productService.CreateAsync(product);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
@@ -42,7 +42,7 @@ public class ProductController : ControllerBase
 
     // Update an existing product
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] ProductController product)
+    public async Task<IActionResult> Update(Guid id, [FromBody] Product product)
     {
         var updated = await _productService.UpdateAsync(id, product);
         if (updated == null) return NotFound();

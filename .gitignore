@@ -1,0 +1,58 @@
+# .NET build folders
+bin/
+obj/
+out/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider files
+.idea/
+
+# Temporary files
+*.tmp
+*.log
+*.vspscc
+*.vssscc
+*_i.c
+*_p.c
+*_h.h
+*.dbmdl
+*.bak
+*.backup
+*.swp
+*.DS_Store
+Thumbs.db
+
+# ASP.NET secrets
+secrets.json
+appsettings.*.json
+!appsettings.json  # Keep the base config file
+
+# EF Core Migrations cache
+Migrations/
+
+# Node.js frontend folders (if you have a React client)
+node_modules/
+build/
+dist/
+.cache/
+*.lock
+yarn-error.log
+npm-debug.log
+pnpm-debug.log
+
+# Environment variables
+.env
+.env.*
+.env.local
+.env.*.local
+
+# Other generated files
+Generated/
+wwwroot/lib/
+wwwroot/dist/

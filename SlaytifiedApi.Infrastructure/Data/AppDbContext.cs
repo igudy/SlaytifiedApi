@@ -1,14 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using SlaytifiedApi.Application.Interfaces;
 using SlaytifiedApi.Domain.Entities;
-using SlaytifiedApi.Infrasturcture.Data;
 
-namespace SlaytifiedApi.Infrasturcture.Data;
-
-public class AppDbContext : AppDbContext
+namespace SlaytifiedApi.Infrastructure.Data
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public class AppDbContext : DbContext, IAppDbContext
+    {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-    public DbSet<User> Users => Set<User>();
-    
-    public DbSet<Product> Products => Set<Product>();
+        public DbSet<User> Users => Set<User>();
+        public DbSet<Product> Products => Set<Product>();
+    }
 }
