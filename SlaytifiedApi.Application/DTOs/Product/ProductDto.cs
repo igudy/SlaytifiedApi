@@ -1,1 +1,22 @@
-// Placeholder for DTOs/Product/ProductDto.cs
+namespace SlaytifiedApi.Application.Dtos
+{
+    public class ProductDto
+    {
+        // Request model (Create/Update)
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public string ImageUrl { get; set; } = string.Empty;
+    }
+
+    public class ProductResponseDto
+    {
+        // Response model (Read)
+        public Guid Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public string ImageUrl { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; }
+    }
+}
