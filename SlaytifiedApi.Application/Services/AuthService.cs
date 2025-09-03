@@ -5,22 +5,28 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using SlaytifiedApi.Domain.Entities;
-using SlaytifiedApi.Infrastructure.Data;
 using SlaytifiedApi.Application.Dtos;
 using Microsoft.EntityFrameworkCore;
+using SlaytifiedApi.Application.Interfaces;
 
 namespace SlaytifiedApi.Application.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly AppDbContext _context;
+        private readonly IAppDbContext _context;
         private readonly IConfiguration _config;
 
-        public AuthService(AppDbContext context, IConfiguration config)
+        public AuthService(IAppDbContext context, IConfiguration config)
         {
             _context = context;
             _config = config;
         }
+
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
+
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterRequestDto request)
         {
@@ -58,6 +64,23 @@ namespace SlaytifiedApi.Application.Services
             return await GenerateTokensAsync(user);
         }
 
+        public async Task<UserResponseDto> GetUserByIdAsync(Guid userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                throw new KeyNotFoundException("User not found");
+
+            return new UserResponseDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            };
+        }
+
         public async Task<AuthResponseDto> RefreshTokenAsync(string refreshToken)
         {
             var user = await _context.Users
@@ -71,6 +94,25 @@ namespace SlaytifiedApi.Application.Services
 
         private async Task<AuthResponseDto> GenerateTokensAsync(User user)
         {
+            // var tokenHandler = new JwtSecurityTokenHandler();
+            // var key = Encoding.UTF8.GetBytes(_config["JwtSettings:SecretKey"]);
+
+            // var tokenDescriptor = new SecurityTokenDescriptor
+            // {
+            //     Subject = new ClaimsIdentity(new[]
+            //     {
+            //         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            //         new Claim(ClaimTypes.Name, user.UserName),
+            //         new Claim(ClaimTypes.Email, user.Email)
+            //     }),
+            //     Expires = DateTime.UtcNow.AddMinutes(15),
+            //     SigningCredentials = new SigningCredentials(
+            //         new SymmetricSecurityKey(key),
+            //         SecurityAlgorithms.HmacSha256Signature)
+            // };
+
+            // var token = tokenHandler.CreateToken(tokenDescriptor);
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_config["JwtSettings:SecretKey"]);
 
@@ -78,11 +120,13 @@ namespace SlaytifiedApi.Application.Services
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Email, user.Email)
-        }),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Email, user.Email)
+                }),
                 Expires = DateTime.UtcNow.AddMinutes(15),
+                Issuer = _config["JwtSettings:Issuer"],
+                Audience = _config["JwtSettings:Audience"],
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature)
@@ -105,6 +149,8 @@ namespace SlaytifiedApi.Application.Services
                 Expiration = tokenDescriptor.Expires!.Value,
                 UserName = user.UserName,
                 Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName
             };
         }
 

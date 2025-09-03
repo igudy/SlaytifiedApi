@@ -8,5 +8,6 @@ namespace SlaytifiedApi.Application.Services
         Task<AuthResponseDto> RegisterAsync(RegisterRequestDto request);
         Task<AuthResponseDto> LoginAsync(LoginRequestDto request);
         Task<AuthResponseDto> RefreshTokenAsync(string refreshToken);
+        Task<UserResponseDto> GetUserByIdAsync(Guid userId);
     }
 }
