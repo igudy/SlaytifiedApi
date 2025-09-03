@@ -34,4 +34,9 @@ namespace SlaytifiedApi.Application.Dtos
         public string FirstName { get; set; } = default!;
         public string LastName { get; set; } = default!;
     }
+
+    public class RefreshTokenRequestDto
+    {
+        public string RefreshToken { get; set; } = string.Empty;
+    }
 }

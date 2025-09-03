@@ -33,25 +33,20 @@ namespace SlaytifiedApi.Api.Controllers
         }
 
         [HttpPost("refresh")]
-        public async Task<IActionResult> Refresh([FromBody] string refreshToken)
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequestDto request)
         {
-            var response = await _authService.RefreshTokenAsync(refreshToken);
+            var response = await _authService.RefreshTokenAsync(request.RefreshToken);
             return Ok(response);
         }
 
 
         // Protect this endpoint(what if i want to use my own middleware?)
         // Todo: What if i'm to use my own middleware.
-        // [AllowAnonymous]
         [Authorize]
         [HttpGet("getUser")]
         public async Task<IActionResult> GetMe()
         {
             var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            Console.WriteLine($"ClaimTypes oooooooooo: {ClaimTypes.NameIdentifier}");
-            Console.WriteLine($"User oooooooooo: {User}");
-            Console.WriteLine($"userIdClaim: {userIdClaim}");
 
             if (string.IsNullOrEmpty(userIdClaim))
                 return Unauthorized();

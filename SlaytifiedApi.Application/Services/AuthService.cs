@@ -94,25 +94,6 @@ namespace SlaytifiedApi.Application.Services
 
         private async Task<AuthResponseDto> GenerateTokensAsync(User user)
         {
-            // var tokenHandler = new JwtSecurityTokenHandler();
-            // var key = Encoding.UTF8.GetBytes(_config["JwtSettings:SecretKey"]);
-
-            // var tokenDescriptor = new SecurityTokenDescriptor
-            // {
-            //     Subject = new ClaimsIdentity(new[]
-            //     {
-            //         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            //         new Claim(ClaimTypes.Name, user.UserName),
-            //         new Claim(ClaimTypes.Email, user.Email)
-            //     }),
-            //     Expires = DateTime.UtcNow.AddMinutes(15),
-            //     SigningCredentials = new SigningCredentials(
-            //         new SymmetricSecurityKey(key),
-            //         SecurityAlgorithms.HmacSha256Signature)
-            // };
-
-            // var token = tokenHandler.CreateToken(tokenDescriptor);
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_config["JwtSettings:SecretKey"]);
 
