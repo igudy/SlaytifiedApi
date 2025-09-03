@@ -3,9 +3,11 @@ using SlaytifiedApi.Application.Interfaces;
 using SlaytifiedApi.Application.Dtos;
 using SlaytifiedApi.Application.Common;
 using SlaytifiedApi.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SlaytifiedApi.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class ProductController : ControllerBase
